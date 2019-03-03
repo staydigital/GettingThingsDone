@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.staydigital</groupId>
+    <artifactId>gtd</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <modules>
+        <module>aggregates</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <name>gtd</name>
+    <description>Parent module for Getting things done stuff</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <spring-boot.version>2.1.3.RELEASE</spring-boot.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <developers>
+        <developer>
+            <name>Stefan Wittmann</name>
+            <email>stay_digital@gmx.de</email>
+        </developer>
+    </developers>
+
+</project>

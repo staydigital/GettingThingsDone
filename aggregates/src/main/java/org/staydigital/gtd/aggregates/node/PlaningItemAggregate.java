@@ -1,12 +1,18 @@
 package org.staydigital.gtd.aggregates.node;
 
-import lombok.Builder;
 import org.staydigital.gtd.aggregates.*;
 
 import java.util.UUID;
 
+/**
+ * Aggregate for Planing Items. Aggregate should be constructed by Builder.
+ * Builder can be obtained by static Builder method.
+ *
+ * @author Wittmann
+ * @since 1.0.0
+ */
 @Aggregate
-public class PlaningItemAggregate {
+class PlaningItemAggregate {
 
     final UUID id;
 
@@ -26,26 +32,32 @@ public class PlaningItemAggregate {
         this.creationDate = new DateValue();
     }
 
-    public static PlaningItemAggregateBuilder builder() {
+    static PlaningItemAggregateBuilder builder() {
         return new PlaningItemAggregateBuilder();
     }
 
+    /**
+     * Builder for Planing item Aggregate. Mandatory values are title and content.
+     *
+     * @author Wittmann
+     * @since 1.0.0
+     */
     @AggregateBuilder
     static class PlaningItemAggregateBuilder {
 
         private String title;
         private String content;
 
-        public PlaningItemAggregate build() {
+        PlaningItemAggregate build() {
             return new PlaningItemAggregate(this);
         }
 
-        public PlaningItemAggregateBuilder title(final String title) {
+        PlaningItemAggregateBuilder title(final String title) {
             this.title = title;
             return this;
         }
 
-        public PlaningItemAggregateBuilder content(final String content) {
+        PlaningItemAggregateBuilder content(final String content) {
             this.content = content;
             return this;
         }

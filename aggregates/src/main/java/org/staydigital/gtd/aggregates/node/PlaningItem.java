@@ -2,11 +2,18 @@ package org.staydigital.gtd.aggregates.node;
 
 import java.util.UUID;
 
+/**
+ * Aggregate Root for a Planing item. Identified by an id, holds
+ * title of Planing item and information about modification.
+ *
+ * @author Wittmann
+ * @since 1.0.0
+ */
 class PlaningItem {
 
-    UUID id;
+    private UUID id;
 
-    String title;
+    private String title;
 
     PlaningItem(final String title) {
         this.id = UUID.randomUUID();

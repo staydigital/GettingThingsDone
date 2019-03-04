@@ -4,7 +4,7 @@ import java.util.UUID;
 
 /**
  * Aggregate Root for a Planing item. Identified by an id, holds
- * title of Planing item and information about modification.
+ * title of Planing item.
  *
  * @author Wittmann
  * @since 1.0.0

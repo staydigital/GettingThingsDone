@@ -3,8 +3,7 @@ package org.staydigital.gtd.aggregates.node;
 import java.util.UUID;
 
 /**
- * Entity for the Content of a Planing item. Holds Content and information
- * about modification
+ * Entity for the Content of a Planing item. Holds Content.
  *
  * @author Wittmann
  * @since 1.0.0

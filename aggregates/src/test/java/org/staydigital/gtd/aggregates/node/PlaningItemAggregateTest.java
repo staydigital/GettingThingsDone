@@ -15,4 +15,14 @@ public class PlaningItemAggregateTest {
         assertThat(planingItemAggregate.planingItem).isNotNull();
         assertThat(planingItemAggregate.planingContent).isNotNull();
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void PlaningItemAggregate_TitleIsMandatory() {
+        PlaningItemAggregate.builder().content("My content").build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void PlaningItemAggregate_ContentIsMandatory() {
+        PlaningItemAggregate.builder().title("My title").build();
+    }
 }

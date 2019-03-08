@@ -7,8 +7,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.staydigital.gtd.aggregates.planingitem.api.commands.ChangePlaningItem;
 import org.staydigital.gtd.aggregates.planingitem.api.commands.CreatePlaningItem;
+import org.staydigital.gtd.aggregates.planingitem.api.commands.ReviewPlaningItem;
 import org.staydigital.gtd.aggregates.planingitem.api.events.PlaningItemChangedEvent;
 import org.staydigital.gtd.aggregates.planingitem.api.events.PlaningItemCreatedEvent;
+import org.staydigital.gtd.aggregates.planingitem.api.events.PlaningItemReviewedEvent;
 
 import java.util.UUID;
 
@@ -45,6 +47,13 @@ public class PlaningItemAggregateTest {
         fixture.given(planingItemCreatedEvent())
                 .when(new ChangePlaningItem(ID, CHANGEDTITLE, CHANGEDCONTENT))
                 .expectEvents(new PlaningItemChangedEvent(ID, CHANGEDTITLE, CHANGEDCONTENT));
+    }
+
+    @Test
+    public void On_ReviewItem_PlaningItemReviewedEvent_ShouldOccure() {
+        fixture.given(planingItemCreatedEvent())
+                .when(new ReviewPlaningItem(ID))
+                .expectEvents(new PlaningItemReviewedEvent(ID));
     }
 
 }

@@ -7,8 +7,10 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
 import org.staydigital.gtd.aggregates.planingitem.api.commands.ChangePlaningItem;
 import org.staydigital.gtd.aggregates.planingitem.api.commands.CreatePlaningItem;
+import org.staydigital.gtd.aggregates.planingitem.api.commands.ReviewPlaningItem;
 import org.staydigital.gtd.aggregates.planingitem.api.events.PlaningItemChangedEvent;
 import org.staydigital.gtd.aggregates.planingitem.api.events.PlaningItemCreatedEvent;
+import org.staydigital.gtd.aggregates.planingitem.api.events.PlaningItemReviewedEvent;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -64,6 +66,14 @@ class PlaningItemAggregate {
         this.content = event.getContent();
     }
 
+    @CommandHandler
+    public void handle(final ReviewPlaningItem command) {
+        apply(new PlaningItemReviewedEvent(command.getId()));
+    }
 
+    @EventSourcingHandler
+    public void on(final PlaningItemReviewedEvent event) {
+        this.planingItemState = PlaningItemState.REVIEWED;
+    }
 
 }

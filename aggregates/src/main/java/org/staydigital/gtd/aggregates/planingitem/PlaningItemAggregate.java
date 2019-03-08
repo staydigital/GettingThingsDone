@@ -11,6 +11,7 @@ import org.staydigital.gtd.aggregates.planingitem.api.commands.ReviewPlaningItem
 import org.staydigital.gtd.aggregates.planingitem.api.events.PlaningItemChangedEvent;
 import org.staydigital.gtd.aggregates.planingitem.api.events.PlaningItemCreatedEvent;
 import org.staydigital.gtd.aggregates.planingitem.api.events.PlaningItemReviewedEvent;
+import org.staydigital.gtd.aggregates.planingitem.exceptions.PlaningItemNotInStateForModificationException;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -20,7 +21,7 @@ import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 /**
  * Aggregate for Planing Items.
  * Title and content are modifiable as long as Planing Item is not reviewed.
- * If Planing Item is Reviewed a Reviewed Item is created.
+ * If Planing Item is reviewed a Task Item is created.
  *
  * @author Wittmann
  * @since 1.0.0
@@ -31,15 +32,40 @@ class PlaningItemAggregate {
     @AggregateIdentifier
     private UUID planingItemId;
 
+    /**
+     * Title holding a short description about what has to be planned
+     */
     private String title;
 
+    /**
+     * A more in detail overview what has to be done
+     */
     private String content;
 
+    /**
+     * Creation Date of this Planing Item
+     * TODO: Review if dates are necessary in relation to an event store
+     */
     private Instant creationDate;
 
+    /**
+     * State of this Planing Item
+     */
     private PlaningItemState planingItemState;
 
     protected PlaningItemAggregate() { }
+
+    /**
+     * Checks if Aggregate is in right state and if not throws supplied exception
+     *
+     * @param stateToCheck      State the Planing Item should have
+     * @param exceptionToRaise  Exception that should be thrown if Planing Item is not in requested state
+     */
+    private void ifNotInStateThrowException(final PlaningItemState stateToCheck, final RuntimeException exceptionToRaise) {
+        if (this.planingItemState.equals(stateToCheck))
+            return;
+        throw exceptionToRaise;
+    }
 
     @CommandHandler
     public PlaningItemAggregate(final CreatePlaningItem command) {
@@ -57,6 +83,7 @@ class PlaningItemAggregate {
 
     @CommandHandler
     public void handle(final ChangePlaningItem command) {
+        ifNotInStateThrowException(PlaningItemState.INITIALIZED, new PlaningItemNotInStateForModificationException(this.planingItemId));
         apply(new PlaningItemChangedEvent(command.getId(), command.getTitle(), command.getContent()));
     }
 

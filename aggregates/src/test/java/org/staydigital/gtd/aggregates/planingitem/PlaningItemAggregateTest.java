@@ -11,6 +11,7 @@ import org.staydigital.gtd.aggregates.planingitem.api.commands.ReviewPlaningItem
 import org.staydigital.gtd.aggregates.planingitem.api.events.PlaningItemChangedEvent;
 import org.staydigital.gtd.aggregates.planingitem.api.events.PlaningItemCreatedEvent;
 import org.staydigital.gtd.aggregates.planingitem.api.events.PlaningItemReviewedEvent;
+import org.staydigital.gtd.aggregates.planingitem.exceptions.PlaningItemNotInStateForModificationException;
 
 import java.util.UUID;
 
@@ -34,6 +35,10 @@ public class PlaningItemAggregateTest {
         return new PlaningItemCreatedEvent(ID, TITLE, CONTENT);
     }
 
+    private PlaningItemReviewedEvent planingItemReviewedEvent() {
+        return new PlaningItemReviewedEvent(ID);
+    }
+
     @Test
     public void On_CreatePlaningItem_PlaningItemCreatedEvent_ShouldOccure() {
         fixture.givenNoPriorActivity()
@@ -54,6 +59,13 @@ public class PlaningItemAggregateTest {
         fixture.given(planingItemCreatedEvent())
                 .when(new ReviewPlaningItem(ID))
                 .expectEvents(new PlaningItemReviewedEvent(ID));
+    }
+
+    @Test
+    public void On_ChangePlaningItem_IfNotInINITIALIZEDState_Throw_PlaningItemNotInStateForModication() {
+        fixture.given(planingItemCreatedEvent(), planingItemReviewedEvent())
+                .when(new ChangePlaningItem(ID, CHANGEDTITLE, CHANGEDCONTENT))
+                .expectException(PlaningItemNotInStateForModificationException.class);
     }
 
 }
